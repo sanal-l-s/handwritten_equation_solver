@@ -8,3 +8,14 @@ cv2.rectangle(img, (100,100), (200,50), (20,0,150), 3)
 cv2.imshow("Image",img)
 
 cv2.waitKey()
+
+
+
+
+
+#TASK
+#live camera
+#Show rectangle and title
+# prompt to show face on rdctangle
+
+#capture
