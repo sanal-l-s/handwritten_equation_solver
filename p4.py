@@ -1,5 +1,5 @@
 import cv2
-img = cv2.imread('1.png')
+img = cv2.imread('49.png')
 #cv2.imshow("Image2", img)
 imgsize=img.shape
 

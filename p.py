@@ -1,4 +1,4 @@
-from _future_ import print_function
+#from _future_ import print_function
 import cv2 as cv
 import numpy as np
 import argparse
@@ -19,7 +19,7 @@ def thresh_callback(val):
     cv.imshow('Contours', drawing)
 # Load source image
 parser = argparse.ArgumentParser(description='Code for Finding contours in your image tutorial.')
-parser.add_argument('--input', help='Path to input image.', default='HappyFish.jpg')
+parser.add_argument('--input', help='Path to input image.', default='49.png')
 args = parser.parse_args()
 src = cv.imread(cv.samples.findFile(args.input))
 if src is None:
