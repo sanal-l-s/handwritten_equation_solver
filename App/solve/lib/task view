@@ -1,0 +1,103 @@
+import 'package:flutter/material.dart';
+import 'package:task_manager/Task_edit.dart';
+import 'package:task_manager/Task_Details.dart';
+import 'package:task_manager/task_create1.dart';
+import 'task_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter/src/material/dropdown.dart';
+
+class TaskView extends StatefulWidget {
+  const TaskView({super.key});
+
+  @override
+  State<TaskView> createState() => _TaskViewState();
+}
+
+class _TaskViewState extends State<TaskView> {
+  List<Tasklist> tasks = [];
+   String selectedProjectId = ''; 
+    List<String> listitems = ["United States of America", "Canada", "United Kingdom", "China", "Russia", "Austria"];
+  String selectval = "United States of America";
+
+
+  Future<void> fetchtasks() async {
+     final Uri apiUrl = Uri.parse('http://localhost:5000/task_view/<int:pid>/<int:mid>');
+    final response = await http.get(apiUrl);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body);
+      setState(() {
+        tasks = jsonData.map((item) => Tasklist.fromJson(item)).toList();
+      });
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    fetchtasks();
+  }
+   void filterTasks(String projectId) {
+    setState(() {
+      selectedProjectId = projectId;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Task Manager"),),
+      body: Container(
+        child: Column(
+          children: [
+            ListView.builder(
+               //final task = tasks[index];
+              itemCount: tasks.length,
+              itemBuilder: (context, index) {
+               final task = tasks[index];
+               return ListTile(
+                title: Text( 'task ID : ${task.taskId}'),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Project ID : ${task.projectId}'),
+                    Text('status : ${task.status}'),
+                  ],
+                ),
+                trailing: const Icon(Icons.arrow_forward),
+                onTap: (){
+                  
+                  Navigator.of(context).push(MaterialPageRoute(builder: ((context) =>taskDetails(tasks: task))
+                  ));
+                },
+      
+               );
+              },
+              
+                
+                
+              
+            )
+             
+         
+          ],
+        ),
+      ),
+      
+     
+        
+       
+    
+     floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: (){Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => taskCreateForm(),)
+        );
+    }
+     
+      ),
+    );
+    
+  }
+}
